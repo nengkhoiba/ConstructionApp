@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".startup.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -44,33 +44,12 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
 
-        <EditText
-            android:id="@+id/editText3"
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/editText4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/red"
-            android:text="SIGN IN"
-            android:textColor="@android:color/background_light" />
-
+            android:layout_marginTop="10dp"/>
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"

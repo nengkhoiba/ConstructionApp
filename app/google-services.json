@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "920753674205",
+    "firebase_url": "https://solidwaste-10cfc.firebaseio.com",
+    "project_id": "solidwaste-10cfc",
+    "storage_bucket": "solidwaste-10cfc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920753674205:android:abbf4a43d714bd7c",
+        "android_client_info": {
+          "package_name": "com.mobimp.econstruction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920753674205-gu7ina4a0fm0ulk8j4bhn96ggk1mitke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMBZSY6goWAyUCBYnMxtXL9ZFtWjgdHJM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

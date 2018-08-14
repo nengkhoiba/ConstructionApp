@@ -1,50 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/window_background</item>
-        <item name="colorPrimaryDark">@color/window_background</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="Base.Theme.Material" parent="Base.Theme.MaterialTheme"></style>
-
-    <style name="Theme.Splash" parent="Base.Theme.MaterialTheme">
-        <item name="colorPrimaryDark">#FFF</item>
-    </style>
-
-    <style name="Base.Theme.MaterialTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/primaryText</item>
-        <item name="android:textColorSecondary">@color/secondarytext</item>
-
-
-        <item name="android:windowBackground">@color/window_background</item>
     </style>
-
-
-    <style name="Widget.CardContent" parent="android:Widget">
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:orientation">vertical</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
-    <style name="Theme.MaterialThemes.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
-
-
-
-
-    <style name="dialog" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowTitleStyle">@style/MyTitleTextStyle</item>
-
-    </style>
-    <style name="MyTitleTextStyle">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-    </style>
 </resources>

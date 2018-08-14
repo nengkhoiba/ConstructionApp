@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0091ea</color>
-    <color name="tabIconTint">#b00b0000</color>
-    <color name="colorPrimaryDark">#01579b</color>
-    <color name="colorAccent">#ff5252</color>
-    <color name="window_background">#f5f5f5</color>
-    <color name="grey">#b6b6b6</color>
-    <color name="white">#ffffff</color>
-    <color name="primaryText">#212121</color>
-    <color name="lightprimarycolor">#63bbc1</color>
-    <color name="secondarytext">#757575</color>
-    <color name="devider">#bdbdbd</color>
+    <color name="colorPrimary">#ffca28</color>
+    <color name="colorPrimaryDark">#fbc02d</color>
+    <color name="colorAccent">#000000</color>
 
-    <color name="slide_1">#d32f2f</color>
-    <color name="slide_2">#fb9c25</color>
-    <color name="slide_3">#B6B6B6</color>
-    <color name="slide_4">#F44336</color>
-    <color name="tint_back">#71000000</color>
-    <array name="dot_colors">
-        <item>#2196F3</item>
-        <item>#BBDEFB</item>
-        <item>#1976D2</item>
-        <item>#FFEB3B</item>
+    <color name="gen_black">#000000</color>
+    <color name="gen_text">#212121</color>
+    <color name="green_light">#43A047</color>
+    <color name="grey_light">#E0E0E0</color>
+
+    <!-- Screens background color-->
+    <color name="bg_screen1">#ffca28</color>
+    <color name="red">#e53935</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#4caf50</color>
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#000000</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#b2b7b9</color>
+
+    <!-- Placeholder colors-->
+    <color name="stay_color">#999999</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen1</item>
     </array>
-    <color name="blue">#4c6c91</color>
-    <color name="green">#2bde73</color>
-    <color name="red">#dc4e41</color>
-    <color name="orange">#f8991d</color>
-    <color name="yellow">#f1d90d</color>
-    <array name="rainbow">
-        <item>@color/blue</item>
-        <item>@color/green</item>
-        <item>@color/red</item>
-        <item>@color/orange</item>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen1</item>
     </array>
 </resources>

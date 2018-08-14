@@ -1,5 +1,62 @@
 <resources>
-    <string name="app_name">Construction App(Prototype)</string>
+    <string name="app_name">W2W</string>
     <string name="facebook_app_id">241220089963262</string>
     <string name="fb_login_protocol_scheme">fb1771814336193948</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Menu item texts -->
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="action_cart">Cart</string>
+    <string name="action_notifications">Notifications</string>
+
+    <string name="Categories">Categories</string>
+    <string name="home">Home</string>
+    <string name="item_1">Buy</string>
+    <string name="item_2">Rent</string>
+    <string name="item_3">Construction Equipments</string>
+    <string name="item_4">Solid Waste Management</string>
+
+    <string name="calculator">Calculator</string>
+
+    <string name="my_profile">My Profile</string>
+
+    <string name="my_orders">My Orders</string>
+    <string name="my_wishlist">My Wishlist</string>
+
+    <string name="setting">Settings</string>
+    <string name="contact_us">Feedback</string>
+    <string name="terms_conditions">Terms \u0026 Conditions</string>
+
+
+    <string name="search_hint">Search for Products, Brands and More</string>
+
+
+    <!--Intro slider texts -->
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">BUY</string>
+    <string name="slide_1_desc">Buy construction material from different vendors in one platform
+    </string>
+
+    <string name="slide_2_title">RENT</string>
+    <string name="slide_2_desc">Rent any construction equipment from differnt sources.</string>
+
+    <string name="slide_3_title">Solid Waste Management</string>
+    <string name="slide_3_desc">Best method with how to recycle solid waste management</string>
+
+    <string name="slide_4_title">Construction equipment</string>
+    <string name="slide_4_desc">Equipment management for construction</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome
+        slider -> clear data
+    </string>
+    <string name="play_again">Play Again</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
