@@ -2,37 +2,43 @@ package com.mobimp.econstruction.fragments;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mobimp.econstruction.ArrayItem.ArticleItem;
+import com.mobimp.econstruction.ArrayItem.ProductItem;
+import com.mobimp.econstruction.Async.AsyncGetArticle;
+import com.mobimp.econstruction.Async.AsyncGetItem;
 import com.mobimp.econstruction.R;
 import com.mobimp.econstruction.adapter.RecycleViewArticleAdapter;
 import com.mobimp.econstruction.adapter.RecycleViewItemAdapter;
 import com.mobimp.econstruction.options.PlaceHolderActivity;
+import com.mobimp.econstruction.startup.CategoryActivity;
 import com.mobimp.econstruction.startup.MainActivity;
+import com.mobimp.econstruction.utility.DataUrl;
 import com.mobimp.econstruction.utility.ImageUrlUtils;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AsyncGetItem.GetItemTask, AsyncGetArticle.GetArticleTask {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,26 +47,14 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    String[] sampleImages = {"https://5.imimg.com/data5/PP/KP/MY-3763192/2dx-backhoe-loader-500x500.jpg",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgbbQPKkbIQSw3KAkGsqnAIWr0Sft0vHQuzBP1szwegqUZeKaG",
-            "https://www.heavyequipments.in/new/wp-content/uploads/2017/06/LT-Komatsu-PC210Lc-Excavator.jpg",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTG9jlr6XgqL6RQ90_xF3q9OQQlaClTGpf_quU4oLeXRkjhvpC"};
-
     CarouselView carouselView;
     RecyclerView mRecycleViewSale,mRecycleViewRent,mRecycleViewArticle;
-    TextView Buy,Rent,Categories,ConstructionEquipment,Calculator,DTP,SWM;
+    TextView Buy,Rent,Categories,ConstructionEquipment,Calculator,DTP,SWM,RentMore,saleMore,articleMore;
+    ProgressBar progressRent,progressSales,ProgressArticle;
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
@@ -92,24 +86,46 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         carouselView = (CarouselView) view.findViewById(R.id.carouselView);
         carouselView.setImageListener(imageListener);
-        carouselView.setPageCount(sampleImages.length);
+        carouselView.setPageCount(MainActivity.mAdvertise.size());
         mRecycleViewArticle=(RecyclerView) view.findViewById(R.id.recycle_article);
         mRecycleViewRent=(RecyclerView) view.findViewById(R.id.recycle_rent);
         mRecycleViewSale=(RecyclerView) view.findViewById(R.id.recycle_sales);
         mRecycleViewSale.setNestedScrollingEnabled(false);
         mRecycleViewRent.setNestedScrollingEnabled(false);
         mRecycleViewArticle.setNestedScrollingEnabled(false);
-        setupRecyclerView(mRecycleViewRent,1);
-        setupRecyclerView(mRecycleViewSale,2);
-        setupRecyclerView(mRecycleViewArticle,3);
+
+        progressRent=(ProgressBar) view.findViewById(R.id.progressBarRent);
+        progressSales=(ProgressBar) view.findViewById(R.id.progressBarSales);
+        ProgressArticle=(ProgressBar) view.findViewById(R.id.progressBarArticle);
+        setupRecyclerView(mRecycleViewRent,1,progressRent);
+        setupRecyclerView(mRecycleViewSale,2,progressSales);
+        setupRecyclerView(mRecycleViewArticle,3,ProgressArticle);
+
+
         Buy=(TextView) view.findViewById(R.id.txt_buy_shortcut);
         Rent=(TextView) view.findViewById(R.id.txt_rent_shortcut);
+        RentMore=(TextView) view.findViewById(R.id.txt_for_rent_more);
+        saleMore=(TextView) view.findViewById(R.id.txt_for_sale_more);
+        articleMore=(TextView) view.findViewById(R.id.txt_article_more);
+
         Categories=(TextView) view.findViewById(R.id.txt_categories_shortcut);
         ConstructionEquipment=(TextView) view.findViewById(R.id.txt_Construction_equip_shortcut);
         Calculator=(TextView) view.findViewById(R.id.txt_Calculator_shortcut);
         DTP=(TextView) view.findViewById(R.id.txt_design_shortcut);
         SWM=(TextView) view.findViewById(R.id.txt_Solid_shortcut);
 
+        saleMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.viewPager.setCurrentItem(1);
+            }
+        });
+        RentMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.viewPager.setCurrentItem(2);
+            }
+        });
         Buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +141,7 @@ public class HomeFragment extends Fragment {
         Categories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), PlaceHolderActivity.class));
+                startActivity(new Intent(getActivity(), CategoryActivity.class));
             }
         });
         ConstructionEquipment.setOnClickListener(new View.OnClickListener() {
@@ -158,35 +174,60 @@ public class HomeFragment extends Fragment {
         public void setImageForPosition(int position, ImageView imageView) {
             Glide
                     .with(HomeFragment.this)
-                    .load(sampleImages[position])
-                    .centerCrop()
-                    .placeholder(R.drawable.splashscreen_logo)
-                    .crossFade()
-                    .thumbnail(0.2f)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .load(MainActivity.mAdvertise.get(position).Image)
+                    .placeholder(R.color.grey_light)
                     .into(imageView);
+
         }
     };
 
-    private void setupRecyclerView(RecyclerView recyclerView,int type) {
+    private void setupRecyclerView(RecyclerView recyclerView, int type, ProgressBar progressBar) {
+
 
         String[] items=null;
         if(type==1) {
-            items = ImageUrlUtils.forRent();
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(new RecycleViewItemAdapter(recyclerView, items,(MainActivity) getActivity()));
+            String url = DataUrl.GET_ITEM+10+"&c="+0+"&n="+""+"&p="+1;
+            new AsyncGetItem(getActivity().getApplicationContext(), url,HomeFragment.this,progressBar,recyclerView).execute();
+
         }else if(type==2){
-            items = ImageUrlUtils.forsales();
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(new RecycleViewItemAdapter(recyclerView, items,(MainActivity) getActivity()));
+            String url = DataUrl.GET_ITEM+9+"&c="+0+"&n="+""+"&p="+1;
+            new AsyncGetItem(getActivity().getApplicationContext(), url,HomeFragment.this,progressBar,recyclerView).execute();
         }else{
-            items = ImageUrlUtils.forarticle();
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(new RecycleViewArticleAdapter(recyclerView, items,(MainActivity) getActivity()));
-        }
+            String url = DataUrl.GET_ARTICLE+1;
+            new AsyncGetArticle(getActivity().getApplicationContext(), url,HomeFragment.this,progressBar,recyclerView).execute();
+
+            }
+
+    }
+
+
+    @Override
+    public void GetItemTaskSuccess(List<ProductItem> mArray, ProgressBar progressBar, RecyclerView recyclerView) {
+        progressBar.setVisibility(View.GONE);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new RecycleViewItemAdapter(recyclerView, mArray,(MainActivity) getActivity()));
+
+    }
+
+    @Override
+    public void GetItemTaskFailed(String info, ProgressBar progressBar) {
+        progressBar.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void GetArticleTaskSuccess(List<ArticleItem> mArray, ProgressBar progressBar, RecyclerView recyclerView) {
+        progressBar.setVisibility(View.GONE);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new RecycleViewArticleAdapter(recyclerView, mArray,(MainActivity) getActivity()));
+
+    }
+
+    @Override
+    public void GetArticleTaskFailed(String info, ProgressBar progressBar) {
+        progressBar.setVisibility(View.GONE);
 
     }
 }

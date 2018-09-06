@@ -69,7 +69,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".options.PlaceHolderActivity" />
-        <activity android:name=".startup.CategoryActivity"></activity>
+        <activity android:name=".startup.CategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".miscellaneous.WebDetailAcivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="w2w.web.view" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

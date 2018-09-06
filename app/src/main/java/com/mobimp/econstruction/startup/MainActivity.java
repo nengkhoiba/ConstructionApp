@@ -1,5 +1,6 @@
 package com.mobimp.econstruction.startup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mobimp.econstruction.ArrayItem.AdvertisementItem;
 import com.mobimp.econstruction.R;
 import com.mobimp.econstruction.fragments.HomeFragment;
 import com.mobimp.econstruction.fragments.ProductListFragment;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     CircleImageView imageView;
     LinearLayout profilelayout;
     RelativeLayout Signinlayout;
+    public static List<AdvertisementItem> mAdvertise;
+    public static String uid,token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,8 @@ public class MainActivity extends AppCompatActivity
             Signinlayout.setVisibility(View.GONE);
             profilename.setText(pf.getDataFromPref("Loginname"));
             email.setText(pf.getDataFromPref("Loginemail"));
+            uid=pf.getDataFromPref("Loginid");
+            token=pf.getDataFromPref("Logintoken");
             Glide
                     .with(this)
                     .load(pf.getDataFromPref("Loginprofile_url"))
@@ -125,7 +132,32 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+            builder.setTitle("Exit");
+            builder.setMessage("Do you want to exit the app?");
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+
+                    finish();
+
+                }
+
+            });
+
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 
@@ -184,12 +216,12 @@ public class MainActivity extends AppCompatActivity
         adapter.addFragment(homeFragment, getString(R.string.home));
         ProductListFragment fragment = new ProductListFragment();
         bundle = new Bundle();
-        bundle.putInt("type", 1);
+        bundle.putInt("type", 9);
         fragment.setArguments(bundle);
         adapter.addFragment(fragment, getString(R.string.item_1));
         fragment = new ProductListFragment();
         bundle = new Bundle();
-        bundle.putInt("type", 2);
+        bundle.putInt("type", 10);
         fragment.setArguments(bundle);
         adapter.addFragment(fragment, getString(R.string.item_2));
 
@@ -204,6 +236,32 @@ public class MainActivity extends AppCompatActivity
         pfragment.setArguments(bundle);
         adapter.addFragment(pfragment, getString(R.string.item_4));
         viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch(position){
+                    case 1:
+                        ProductListFragment.masterCat=9;
+                        break;
+                    case 2:
+                        ProductListFragment.masterCat=10;
+                        break;
+                    default:
+                        ProductListFragment.masterCat=0;
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -211,10 +269,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        if (id == R.id.nav_item0) {
+            startActivity(new Intent(MainActivity.this, CategoryActivity.class));
+        }else
         if (id == R.id.nav_item1) {
             viewPager.setCurrentItem(1);
+            ProductListFragment.masterCat=9;
         } else if (id == R.id.nav_item2) {
+            ProductListFragment.masterCat=10;
             viewPager.setCurrentItem(2);
         } else if (id == R.id.nav_item3) {
             viewPager.setCurrentItem(3);
@@ -267,4 +329,5 @@ public class MainActivity extends AppCompatActivity
             return mFragmentTitles.get(position);
         }
     }
+
 }

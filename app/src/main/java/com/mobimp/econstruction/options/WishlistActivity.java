@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,6 +32,9 @@ public class WishlistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_recylerview_list);
+        ActionBar ab=getSupportActionBar();
+        ab.setTitle("Wishlist");
+        ab.setDisplayHomeAsUpEnabled(true);
         mContext = WishlistActivity.this;
 
         ImageUrlUtils imageUrlUtils = new ImageUrlUtils();
@@ -111,6 +116,15 @@ public class WishlistActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return mWishlistImageUri.size();
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                finish();
+                return super.onOptionsItemSelected(item);
+
         }
     }
 }

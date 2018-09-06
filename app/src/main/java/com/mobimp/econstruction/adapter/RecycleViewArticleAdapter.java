@@ -1,5 +1,6 @@
 package com.mobimp.econstruction.adapter;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,14 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mobimp.econstruction.ArrayItem.ArticleItem;
 import com.mobimp.econstruction.R;
+import com.mobimp.econstruction.miscellaneous.WebDetailAcivity;
 import com.mobimp.econstruction.startup.MainActivity;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class RecycleViewArticleAdapter extends RecyclerView.Adapter<RecycleViewArticleAdapter.ViewHolder> {
 
-    private String[] mValues;
+    private List<ArticleItem> mValues;
     private RecyclerView mRecyclerView;
     private static MainActivity mActivity;
 
@@ -23,17 +31,25 @@ public class RecycleViewArticleAdapter extends RecyclerView.Adapter<RecycleViewA
         public final SimpleDraweeView mImageView;
         public final LinearLayout mLayoutItem;
         public final ImageView mShare;
+        public final TextView txtName,txtDesc;
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mImageView = (SimpleDraweeView) view.findViewById(R.id.image1);
+            mImageView = (SimpleDraweeView) view.findViewById(R.id.img_article);
             mLayoutItem = (LinearLayout) view.findViewById(R.id.layout_item);
-            mShare = (ImageView) view.findViewById(R.id.ic_share);
+            mShare = (ImageView) view.findViewById(R.id.ic_article_share);
+            txtName=(TextView) view.findViewById(R.id.txt_article_name);
+            txtDesc=(TextView) view.findViewById(R.id.txt_article_desc);
         }
     }
 
-    public RecycleViewArticleAdapter(RecyclerView recyclerView, String[] items, MainActivity activity) {
+    public RecycleViewArticleAdapter(RecyclerView recyclerView, List<ArticleItem> items, MainActivity activity) {
         mValues = items;
         mRecyclerView = recyclerView;
         mActivity = (MainActivity) activity;
@@ -60,12 +76,18 @@ public class RecycleViewArticleAdapter extends RecyclerView.Adapter<RecycleViewA
     @Override
     public void onBindViewHolder(final RecycleViewArticleAdapter.ViewHolder holder, final int position) {
 
-        final Uri uri = Uri.parse(mValues[position]);
+        final Uri uri = Uri.parse(mValues.get(position).Image);
         holder.mImageView.setImageURI(uri);
+        holder.txtDesc.setText(mValues.get(position).Details);
+        holder.txtName.setText(mValues.get(position).Title);
+
         holder.mLayoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                WebDetailAcivity.url=mValues.get(position).link;
+                Intent newsIntent=new Intent("w2w.web.view");
 
+                v.getContext().startActivity(newsIntent);
 
             }
         });
@@ -74,7 +96,17 @@ public class RecycleViewArticleAdapter extends RecyclerView.Adapter<RecycleViewA
         holder.mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                try {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("text/plain");
+                    i.putExtra(Intent.EXTRA_SUBJECT, "w2w article");
+                    String sAux ;
+                    sAux =  mValues.get(position).link;
+                    i.putExtra(Intent.EXTRA_TEXT, sAux);
+                    mActivity.startActivity(Intent.createChooser(i, "choose one"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
 
             }
         });
@@ -83,6 +115,6 @@ public class RecycleViewArticleAdapter extends RecyclerView.Adapter<RecycleViewA
 
     @Override
     public int getItemCount() {
-        return mValues.length;
+        return mValues.size();
     }
 }

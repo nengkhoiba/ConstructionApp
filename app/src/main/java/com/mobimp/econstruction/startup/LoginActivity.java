@@ -38,7 +38,10 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.mobimp.econstruction.ArrayItem.LoginItem;
+import com.mobimp.econstruction.Async.AsyncSetLogin;
 import com.mobimp.econstruction.R;
+import com.mobimp.econstruction.utility.DataUrl;
 import com.mobimp.econstruction.utility.PrefManager;
 
 import org.json.JSONException;
@@ -47,13 +50,15 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements AsyncSetLogin.GetCategoryTask {
 
     private static final String TAG ="login" ;
     GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     int RC_SIGN_IN=1;
     CallbackManager mCallbackManager;
+    SignInButton signInButton;
+    View view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +84,12 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient=GoogleSignIn.getClient(LoginActivity.this,gso);
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
+                view=v;
             }
         });
 
@@ -133,9 +139,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginSuccess(String name,String profile,String Email,String ID){
-        PrefManager pf=new PrefManager(LoginActivity.this);
-        pf.setLoginDetails(name,profile,Email,ID);
-        finish();
+        Snackbar.make((View)(signInButton),"Validating please wait...",Snackbar.LENGTH_LONG).show();
+        LoginItem mLogin=new LoginItem();
+        mLogin.Name=name;
+        mLogin.PhotoUrl=profile;
+        mLogin.Email=Email;
+        mLogin.AppId=ID;
+        String url=DataUrl.SET_SIGNIN+name+"&p="+profile+"&e="+Email+"&id="+ID;
+        new AsyncSetLogin(LoginActivity.this, url,LoginActivity.this,mLogin).execute();
+
 
     }
     private void signIn() {
@@ -223,4 +235,20 @@ private void handleFacebookAccessToken(AccessToken token) {
             });
 }
 
+    @Override
+    public void GetLoginTaskSuccess(LoginItem mArray) {
+
+        if(mArray.Mode.equals("1")) {
+            PrefManager pf = new PrefManager(LoginActivity.this);
+            pf.setLoginDetails(mArray.Name, mArray.PhotoUrl, mArray.Email, mArray.AppId,mArray.token);
+            finish();
+        }else{
+            Snackbar.make((View)(signInButton),"Your account is block",Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void GetLoginTaskFailed(String info) {
+        Snackbar.make((View)(signInButton),"Something went wrong",Snackbar.LENGTH_LONG).show();
+    }
 }

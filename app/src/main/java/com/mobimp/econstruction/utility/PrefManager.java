@@ -34,7 +34,7 @@ public class PrefManager {
         return true; //pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
 
-    public void setLoginDetails(String name,String profile_url,String email,String id){
+    public void setLoginDetails(String name, String profile_url, String email, String id, String token){
         editor.putBoolean(LOGIN,true);
         editor.commit();
         editor.putString(LOGIN+"name",name);
@@ -44,6 +44,8 @@ public class PrefManager {
         editor.putString(LOGIN+"email",email);
         editor.commit();
         editor.putString(LOGIN+"id",id);
+        editor.commit();
+        editor.putString(LOGIN+"token",token);
         editor.commit();
     }
     public void setLogout(){

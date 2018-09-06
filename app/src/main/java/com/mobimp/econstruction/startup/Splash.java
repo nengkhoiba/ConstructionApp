@@ -10,9 +10,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.mobimp.econstruction.ArrayItem.AdvertisementItem;
+import com.mobimp.econstruction.ArrayItem.CategoryItem;
+import com.mobimp.econstruction.Async.AsyncGetAdvertisement;
+import com.mobimp.econstruction.Async.AsyncGetCategory;
 import com.mobimp.econstruction.R;
+import com.mobimp.econstruction.utility.DataUrl;
 
-public class Splash extends AppCompatActivity implements Animation.AnimationListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Splash extends AppCompatActivity implements Animation.AnimationListener, AsyncGetCategory.GetCategoryTask, AsyncGetAdvertisement.GetAdvertiseTask {
     Animation animFadeIn;
     ImageView logoView;
 
@@ -43,7 +51,7 @@ public class Splash extends AppCompatActivity implements Animation.AnimationList
         // start the animation
         logoView.setVisibility(View.VISIBLE);
         logoView.startAnimation(animFadeIn);
-
+        new AsyncGetCategory(Splash.this, DataUrl.GET_CATEGORY,Splash.this).execute();
     }
 
     @Override
@@ -59,9 +67,7 @@ public class Splash extends AppCompatActivity implements Animation.AnimationList
 
     public void onAnimationEnd(Animation animation) {
         // Start Main Screen
-        Intent i = new Intent(Splash.this, WelcomeActivity.class);
-        startActivity(i);
-        this.finish();
+
     }
 
     @Override
@@ -72,5 +78,30 @@ public class Splash extends AppCompatActivity implements Animation.AnimationList
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    @Override
+    public void GetCategoryTaskSuccess(List<CategoryItem> mArray) {
+        CategoryActivity.mArray=mArray;
+
+        new AsyncGetAdvertisement(Splash.this, DataUrl.GET_ADVERTISEMENT,Splash.this).execute();
+    }
+
+    @Override
+    public void GetCategoryTaskFailed(String info) {
+        new AsyncGetCategory(Splash.this, DataUrl.GET_CATEGORY,Splash.this).execute();
+    }
+
+    @Override
+    public void GetAdvertiseTaskSuccess(List<AdvertisementItem> mArray) {
+        MainActivity.mAdvertise=mArray;
+        Intent i = new Intent(Splash.this, WelcomeActivity.class);
+        startActivity(i);
+        this.finish();
+    }
+
+    @Override
+    public void GetAdvertiseTaskFailed(String info) {
+        new AsyncGetAdvertisement(Splash.this, DataUrl.GET_ADVERTISEMENT,Splash.this).execute();
     }
 }

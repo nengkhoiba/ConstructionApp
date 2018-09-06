@@ -7,7 +7,8 @@
     <color name="gen_black">#000000</color>
     <color name="gen_text">#212121</color>
     <color name="green_light">#43A047</color>
-    <color name="grey_light">#E0E0E0</color>
+    <color name="grey_light">#eeeded</color>
+    <color name="white_offset">#f0ffffff</color>
 
     <!-- Screens background color-->
     <color name="bg_screen1">#ffca28</color>

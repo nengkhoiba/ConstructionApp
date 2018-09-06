@@ -27,9 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
+import com.mobimp.econstruction.ArrayItem.ItemImageUrl;
 import com.mobimp.econstruction.R;
 import com.mobimp.econstruction.photoview.view.PhotoView;
 import com.mobimp.econstruction.utility.ImageUrlUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Lock/Unlock button is added to the ActionBar.
@@ -44,12 +48,13 @@ public class ViewPagerActivity extends Activity {
     private static final String ISLOCKED_ARG = "isLocked";
     private ViewPager mViewPager;
     private int position;
+    public static List<ItemImageUrl> imageUrls;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
-        mViewPager = (HackyViewPager) findViewById(R.id.view_pager);
+        mViewPager = (HackyViewPager) findViewById(R.id.view_pager_image);
         setContentView(mViewPager);
 
         mViewPager.setAdapter(new SamplePagerAdapter());
@@ -73,17 +78,17 @@ public class ViewPagerActivity extends Activity {
     static class SamplePagerAdapter extends PagerAdapter {
        /* Here I'm adding the demo pics, but you can add your Item related pics , just get your pics based on itemID (use asynctask) and
         fill the urls in arraylist*/
-        private static final String[] sDrawables = ImageUrlUtils.getImageUrls();
+
 
         @Override
         public int getCount() {
-            return sDrawables.length;
+            return imageUrls.size();
         }
 
         @Override
         public View instantiateItem(ViewGroup container, int position) {
             PhotoView photoView = new PhotoView(container.getContext());
-            photoView.setImageUri(sDrawables[position]);
+            photoView.setImageUri(imageUrls.get(position).imageUrl);
 
             // Now just add PhotoView to ViewPager and return it
             container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
